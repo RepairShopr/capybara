@@ -53,4 +53,29 @@ Capybara::SpecHelper.spec '#reset_session!' do
     @session.visit("/")
     expect(@session.current_path).to eq("/")
   end
+
+  it "includes test trace with server trace when `Capybara.include_test_trace_on_server_error = true`", :requires => [:server] do
+    Capybara.raise_server_errors = true
+    Capybara.include_test_trace_on_server_error = true
+
+    quietly { @session.visit("/error") }
+    expect do
+      @session.reset_session!
+    end.to raise_error { |error|
+      expect(error.backtrace).to include(%r{#{__FILE__}})
+    }
+  end
+
+  it "excludes test trace with server trace when `Capybara.include_test_trace_on_server_error = false`", :requires => [:server] do
+    Capybara.raise_server_errors = true
+    Capybara.include_test_trace_on_server_error = false
+
+    quietly { @session.visit("/error") }
+    expect do
+      @session.reset_session!
+    end.to raise_error { |error|
+      expect(error.backtrace).not_to include(%r{#{__FILE__}})
+    }
+  end
+
 end
