@@ -114,7 +114,14 @@ module Capybara
     # Raise errors encountered in the server
     #
     def raise_server_error!
-      raise @server.error if Capybara.raise_server_errors and @server and @server.error
+      if Capybara.raise_server_errors and @server and @server.error
+        if Capybara.include_test_trace_on_server_error
+          @server.error.backtrace << "^ async failure with above trace, triggered at or before below trace v"
+          @server.error.backtrace.concat caller
+        end
+
+        raise @server.error
+      end
     ensure
       @server.reset_error! if @server
     end

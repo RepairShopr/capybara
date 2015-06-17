@@ -22,7 +22,8 @@ module Capybara
     attr_accessor :asset_host, :app_host, :run_server, :default_host, :always_include_port
     attr_accessor :server_port, :exact, :match, :exact_options, :visible_text_only
     attr_accessor :default_selector, :default_max_wait_time, :ignore_hidden_elements
-    attr_accessor :save_and_open_page_path, :wait_on_first_by_default, :automatic_reload, :raise_server_errors, :server_errors
+    attr_accessor :save_and_open_page_path, :wait_on_first_by_default, :automatic_reload, :raise_server_errors, :server_errors, :include_test_trace_on_server_error
+
     attr_writer :default_driver, :current_driver, :javascript_driver, :session_name, :server_host
     attr_accessor :app
 
@@ -382,6 +383,7 @@ Capybara.configure do |config|
   config.exact = false
   config.raise_server_errors = true
   config.server_errors = [StandardError]
+  config.include_test_trace_on_server_error = true
   config.visible_text_only = false
   config.wait_on_first_by_default = false
 end

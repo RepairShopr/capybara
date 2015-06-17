@@ -31,6 +31,7 @@ module Capybara
         Capybara.exact = false
         Capybara.exact_options = false
         Capybara.raise_server_errors = true
+        Capybara.include_test_trace_on_server_error = true
         Capybara.visible_text_only = false
         Capybara.match = :smart
         Capybara.wait_on_first_by_default = false
